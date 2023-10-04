@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-
+const DotenvWebpack = require('dotenv-webpack');
 
 module.exports = {
   entry: './src/index.js',
@@ -80,6 +80,7 @@ module.exports = {
     //     }
     //   ]
     // })
+    new DotenvWebpack(),
   ],
   optimization:{
     minimize: true,
