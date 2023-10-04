@@ -3,13 +3,15 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 
 module.exports = {
   entry: './src/index.js',
   output:{
     path: path.resolve(__dirname, 'dist'),
-    filename: 'main.js'
+    filename: '[name].[contenthash].js'
   },
   resolve: {
     extensions:['.js']
@@ -48,7 +50,7 @@ module.exports = {
         //   esModule: false
         // },
         generator:{
-          filename: 'assets/fonts/[hash][ext][query]'
+          filename: 'assets/fonts/[name].[contenthash][ext][query]'
         }
       }
     ]
@@ -59,7 +61,9 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html'
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles/[name].[contenthash].css'
+    }),
     // new CopyWebpackPlugin({
     //   patterns: [
     //     {
@@ -68,8 +72,14 @@ module.exports = {
     //     }
     //   ]
     // })
-
-  ]
+  ],
+  optimization:{
+    minimize: true,
+    minimizer: [
+      new CssMinimizerWebpackPlugin(),
+      new TerserWebpackPlugin()
+    ]
+  }
 }
 
 // in order to execute this file without a webpack.config.js 
