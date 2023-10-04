@@ -29,8 +29,26 @@ module.exports = {
       },
       {
         test: /.png/,
-        type: 'asset/resource'
+        type: 'asset/resource',
+        generator:{
+          filename: 'assets/images/[hash][ext][query]'
+        }
 
+      },
+      {
+        test: /\.(woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          mimetype: 'application/font-woff',
+          name: '[name].[ext]', 
+          outputPath: 'assets/fonts',
+          publicPath: 'assets/fonts',
+          esModule: false
+        },
+        generator:{
+          filename: 'assets/fonts/[hash][ext][query]'
+        }
       }
     ]
   },
@@ -41,14 +59,14 @@ module.exports = {
       filename: 'index.html'
     }),
     new MiniCssExtractPlugin(),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname,"src","assets/images"),
-          to: "assets/images"
-        }
-      ]
-    })
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: path.resolve(__dirname,"src","assets/images"),
+    //       to: "assets/images"
+    //     }
+    //   ]
+    // })
 
   ]
 }
